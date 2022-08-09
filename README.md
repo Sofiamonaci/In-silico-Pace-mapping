@@ -8,4 +8,4 @@ Sofia Monaci, Marina Strocchi, Cristobal Rodero, Karli Gillette, John Whitaker, 
 
 This computational platform can be used to generate in-silico pace-maps from clinical/simulated ECGs/EGMs paces and simulated/clinical VT ECGs/EGMs to **localise critical ablation targets of post-infarct VTs (e.g. exits, entrances, isthmuses) non-invasively**.
 
-Python scripts only require basic libraries such as numpy, padas, os, sys, argparse
+Python scripts only require basic libraries such as numpy, pandas, os, sys, argparse and matlab.engine (visit (here) [https://uk.mathworks.com/help/matlab/matlab_external/install-the-matlab-engine-for-python.html] for instructions on how to set up matlab engine for python). However, the overall pipeline requires tools such as meshtool and GlVTKConvert
