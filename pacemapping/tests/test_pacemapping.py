@@ -1,21 +1,21 @@
 import matlab.engine
 import pandas as pd
-from pacemapping import PaceMaps
-from processing import output_name, interpolate_map
+from ..pacemapping import PaceMaps
+from ..processing import output_name, interpolate_map
 import numpy as np
 
 """
 Test script to compute conventional and reference-less pace-maps between reference VT signals and paced signals
 """
 
-# Initialise files
+# INITIALISE FILES
 ref_file = '/media/sm18/Seagate Backup Plus Drive/PhD/SBRT_Patient1/post_processed/ecg/VT_PVC2_VT_MULTI_BEAT_ecg.csv'
 pts_pace_file = '/media/sm18/Seagate Backup Plus Drive/PhD/SBRT_Patient1/pacing/final_clinical_pacing.pts'
 pace_file = '/media/sm18/Seagate Backup Plus Drive/PhD/SBRT_Patient1/pacing/COMBINED_ECG_paces.csv'
 type_sig = 'ecg'
-folder_out = '/home/sm18/Desktop/'
+folder_out = './output_files/'
 mesh_file = '/media/sm18/Seagate\ Backup\ Plus\ Drive/PhD/SBRT_Patient1/Mesh/myo_final'
-flag = 1 # mean of 12/12
+flag = 1 # mean of 10/12
 cycle = 40
 
 ########################################################################################################################
@@ -25,7 +25,7 @@ cycle = 40
 # Computing conventional pace-map
 outfile_conv = output_name(folder=folder_out, type_map = 'conventional', type_sig = type_sig, flag = flag)
 eng = matlab.engine.start_matlab()
-eng.addpath('/media/sm18/Seagate Backup Plus Drive/PhD/SBRT_Patient1')
+eng.addpath('../matlab/')
 corr = eng.clinical_pacemapping(ref_file,pace_file,flag,outfile_conv + '.dat',type_sig,cycle)
 interpolate_map(idat = outfile_conv + '.dat',odat = outfile_conv + '_myo.dat',mesh = mesh_file,pts = pts_pace_file.replace(' ','\ '), flag=flag)
 
