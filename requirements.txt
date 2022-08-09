@@ -4,6 +4,8 @@ dataclasses
 scipy
 matlab.engine
 [./pacemapping/processing.py]
+numpy
+os
 meshtool (in PATH)
 GlVTKConvert (in PATH)
 [./pacemapping/pacing_points.py]
@@ -14,3 +16,6 @@ open3d
 logging
 pandas
 [./pacemapping/tests/test_pacemapping.py]
+matlab.engine
+pandas
+numpy
