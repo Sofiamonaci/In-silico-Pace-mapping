@@ -2,8 +2,7 @@
 function mean_corr = QRS_align(x,y,flag,cycle,varargin)
 
 %% Usage:
-% This function allows to align the signals according to delay between the
-% two ECGs in each lead
+% This function allows to align and crop QRSs, used for computing pace-maps
 % x:            12/8 x n_times -> first signal (vt or paced)
 % y:            12/8 x n_times -> second signal (paced)
 % flag:         type of correlation (0: mean of all, 1: mean of highest 10, 2:
@@ -17,6 +16,7 @@ function mean_corr = QRS_align(x,y,flag,cycle,varargin)
 
 inv = 0;
 
+% Initialise sequence plots and subplots if plotting on
 if size(x,1)==12
     sequence = {'V1','V2','V3','V4','V5','V6','LI','LII','LIII','aVR','aVL','aVF'};
     h =@(x) subplot(4,3,x);
@@ -29,10 +29,10 @@ end
 corr = zeros(1,size(x,1));
 for i=1:size(x,1)
     
+    % Align signal based on cross-correlation
     [xa,ya,D] = alignsignals(x(i,:),y(i,:));
     
-    
-    
+    % Crop aligned signals so they have same size
     if size(xa,2)>size(ya,2)
         xa = xa(1:size(ya,2));
     else
@@ -44,18 +44,19 @@ for i=1:size(x,1)
         ya = ya(abs(D):end);
     end
     
+    % If signal is at least double the cycle length (meaning that it has more than two QRSs)
     if length(xa) >= 2*cycle
+    
+        % Find peaks
         [vt_peaks,~] = findpeaks(xa,'MinPeakDistance',cycle);
-        % Clip QRSs according to intersections
         
+        % Clip QRSs according to intersections
         if length(vt_peaks)>2
             
-            %disp('Clipping QRSs ...')
             [~,j_max] = max(abs(ya));
             [~,~] = max(abs(xa));
             
             % Find first intersection
-            
             for j=j_max:-1:1
                 
                 if ya(j)*ya(j_max)<=0.006
@@ -91,7 +92,7 @@ for i=1:size(x,1)
         end
     end
     
-    %R = corrcoef(xa,ya);
+    % Compute correlation between cropped and aligned signals
     R = cov(xa,ya)./(std(xa)*std(ya));
     
     corr(i) = R(1,2);
