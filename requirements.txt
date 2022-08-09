@@ -1,0 +1,16 @@
+[./pacemapping/pacemapping.py]
+numpy
+dataclasses
+scipy
+matlab.engine
+[./pacemapping/processing.py]
+meshtool (in PATH)
+GlVTKConvert (in PATH)
+[./pacemapping/pacing_points.py]
+os
+sys
+argparse
+open3d
+logging
+pandas
+[./pacemapping/tests/test_pacemapping.py]
