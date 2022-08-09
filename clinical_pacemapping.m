@@ -1,9 +1,9 @@
 
 
-function corr = clinical_pacemapping(vt_file,paced_file,flag,out,type_sig,cycle)
+function corr = conventional_pacemapping(vt_file,paced_file,flag,out,type_sig,cycle)
 
 %% Usage
-% corr = clinical_pacemapping(vt_file,paced_file,flag,out, varargin)
+% corr = conventional_pacemapping(vt_file,paced_file,flag,out, varargin)
 % Compute correlation maps between paces and a reference VT. Signals can be
 % either 12-lead ECGs or 8-lead EGMs, however default is 12-lead ECGs, so
 % enter 5th argument to compute correlation between 8-lead EGMs
@@ -27,8 +27,6 @@ function corr = clinical_pacemapping(vt_file,paced_file,flag,out,type_sig,cycle)
 % 11/10/21
 
 clc;
-
-addpath('/media/sm18/Seagate Backup Plus Drive/PhD/Scripts/ECG/');
 
 fprintf('\n\nCOMPUTING CONVENTIONAL PACE-MAPs FOR VT LOCALISATION...\n\n');
 
