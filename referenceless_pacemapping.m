@@ -2,12 +2,12 @@
 
 
 
-function corr_map = clinical_gradient_pacemapping(paced_file,pts_file,out,type_sig,cycle)
+function corr_map = referenceless_pacemapping(paced_file,pts_file,out,type_sig,cycle)
 
 
 %% Usage
-% corr = clinical_gradient_pacemapping(paced_file,pts_file,out,varargin)
-% Compute correlation maps between paces (gradient pace-mapping) for ishtmus identification. Signals can be
+% corr = referenceless_pacemapping(paced_file,pts_file,out,type_sig,cycle)
+% Compute correlation maps between paces (reference-less pace-mapping) for ishtmus identification. Signals can be
 % either 12-lead ECGs or 8-lead EGMs, however default is 12-lead ECGs, so
 % enter 5th argument to compute correlation between 8-lead EGMs
 %
@@ -16,7 +16,7 @@ function corr_map = clinical_gradient_pacemapping(paced_file,pts_file,out,type_s
 %               size: [n_paces*leads, n_time]
 % pts_file:     pacing points file/array in cartesian format
 % out:          output file (if provided) 
-% type_sig:     'ECG' or 'EGM'
+% type_sig:     'ECG' or 'EGM'. 'ECG' is default
 % cycle:        bcl/cycle of paced_file
 %
 % Output:
@@ -29,11 +29,9 @@ function corr_map = clinical_gradient_pacemapping(paced_file,pts_file,out,type_s
 
 clc;
 
-addpath('/media/sm18/Seagate Backup Plus Drive/PhD/Scripts/ECG/');
-
 fprintf('\n\nCOMPUTING GRADIENT PACE-MAPs FOR VT ISTHMUS LOCALISATION...\n\n');
 
-% Loading and Reading filesout = [out(1:end-4),'.pts'];
+% Loading and Reading stimuli file (pacing locations)
 if isa(pts_file,'char') || isa(pts_file,'string')
     fprintf(' Reading %s ... \n',pts_file);
     
@@ -48,6 +46,7 @@ else
     pts = pts_file;
 end
 
+% Loading and Reading paced signals
 if isa(paced_file,'char') || isa(paced_file,'string')
     fprintf(' Reading %s ... \n',paced_file);
     if contains(paced_file,'.csv')
@@ -59,7 +58,7 @@ else
     pace = paced_file;
 end
 
-% Deciding whether to deal with ECGs or EGMs
+% ECG or EGM Flag
 if contains(type_sig, 'EGM')
     fprintf('Considering 8-lead EGMs ...\n');
     N_leads = 8;
@@ -67,6 +66,7 @@ else
     fprintf('Considering 12-lead ECGs ...\n');
     N_leads = 12;
 end
+
 % Computing number of pacing locations
 N_sites = round(size(pace,1)/N_leads);
 flag = 1;
@@ -76,6 +76,7 @@ count = 1;
 corr_map = [];
 new_stimuli = [];
 m = 0;
+% Radius of neighbouring points to consider
 thr = 20000; % 20 or 40 mm
 
 for j = 1:N_sites
@@ -114,6 +115,7 @@ if ~isempty(find(isinf(corr_map), 1))
     new_stimuli = new_stimuli(new_ind,:);
 end
 
+% Writing out referenceless correlation map and new paced locations
 if ~isempty(out)
     
     if ~contains(out,'.dat')
