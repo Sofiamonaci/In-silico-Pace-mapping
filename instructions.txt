@@ -1,7 +1,6 @@
 The original scripts used to generate pace-maps in Monaci et al. 2020 can be found in pacemapping/matlab. 
 
-A python module that follows matlab implementation can be found in pacemapping/pacemapping.py. However, at the moment the alignment of signals according to cross-correlation
-only works when having multiple beats in the paced file, and the overall lengths of the reference VT and the paced signals match.
+A python module that follows matlab implementation can be found in pacemapping/pacemapping.py. However, at the moment the alignment of signals according to cross-correlation only works when having multiple beats in the paced file, and when the overall lengths of the reference VT and the paced signals match. 
 
 To compute conventional and reference-less pacemaps given a reference VT signal (ECG or EGM) and simulated paced traces, run
 
@@ -9,6 +8,10 @@ To compute conventional and reference-less pacemaps given a reference VT signal 
 
 after changing/entering files of interest.
 
-The simulated paced traces need to be pre-processed so that they are stored in a .csv file as a 2D array (N_pacing_sites x N_leads) x N_steps
+FORMAT of files:
+- Reference VT signal --> .csv that has N_leads x N_timepoints
+- simulated paced beats --> combined in one file, .csv (N_leads x N_paces) x N_timepoints. 
 
-./pacemapping/pacing_points.py can be run from the terminal (select appropriate arguments) to generate pacing locations around a mesh of interest.
+Both the reference VT signal and the simulated paced signals can either contain one QRS or multiple QRSs.
+
+./pacemapping/pacing_points.py can be run from the terminal (select appropriate arguments) to generate pacing locations around a mesh of interest. This function can be run to generate equally distributed pacing locations (by selecting distance of interest in mm) in specific AHA segments and/or tags of the mesh of interest.
